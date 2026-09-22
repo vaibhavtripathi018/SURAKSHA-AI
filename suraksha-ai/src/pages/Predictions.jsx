@@ -43,7 +43,7 @@ const Predictions = () => {
     setWeatherLoading(true);
 
     const weatherResponse = await fetch(
-      `http://127.0.0.1:8000/weather?location=${encodeURIComponent(
+      `https://suraksha-ai-3e2g.onrender.com/weather?location=${encodeURIComponent(
         formData.location
       )}`
     );
@@ -55,7 +55,7 @@ const Predictions = () => {
     }
 
     const terrainResponse = await fetch(
-      `http://127.0.0.1:8000/terrain?latitude=${weatherData.latitude}&longitude=${weatherData.longitude}`
+      `https://suraksha-ai-3e2g.onrender.com/terrain?latitude=${weatherData.latitude}&longitude=${weatherData.longitude}`
     );
 
     const terrainData = await terrainResponse.json();
@@ -113,7 +113,7 @@ const Predictions = () => {
       const soilMoisture = Number(liveWeather.soilMoisture ?? 0);
 
       // Send live weather + terrain data to prediction API
-      const response = await fetch("http://127.0.0.1:8000/predict", {
+      const response = await fetch("https://suraksha-ai-3e2g.onrender.com/predict", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
