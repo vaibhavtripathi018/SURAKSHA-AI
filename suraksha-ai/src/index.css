@@ -1,0 +1,807 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #071b2e;
+  color: white;
+}
+
+button,
+input {
+  font-family: inherit;
+}
+/* =========================================
+   SURAKSHA-AI PREDICTION PAGE
+   ========================================= */
+
+.page-container {
+  width: 100%;
+  min-height: 100%;
+  padding: 28px 32px;
+  box-sizing: border-box;
+}
+
+.page-header {
+  margin-bottom: 24px;
+}
+
+.page-header h1 {
+  margin: 0 0 8px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.page-header p {
+  margin: 0;
+  color: #8fa9bd;
+  font-size: 14px;
+}
+
+/* Main two-column layout */
+
+.prediction-container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  align-items: stretch;
+}
+
+/* Cards */
+
+.prediction-form-card,
+.prediction-result-card {
+  background: #123451;
+  border: 1px solid #285473;
+  border-radius: 16px;
+  padding: 26px;
+  box-sizing: border-box;
+  min-height: 520px;
+}
+
+/* Form */
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.form-group input {
+  width: 100%;
+  height: 44px;
+  padding: 0 14px;
+  box-sizing: border-box;
+
+  background: #0d2941;
+  border: 1px solid #2d5b79;
+  border-radius: 9px;
+
+  color: #ffffff;
+  font-size: 14px;
+  outline: none;
+}
+
+.form-group input:focus {
+  border-color: #18aeea;
+  box-shadow: 0 0 0 2px rgba(24, 174, 234, 0.15);
+}
+
+.form-group input::placeholder {
+  color: #6f8ba0;
+}
+
+/* Prediction button */
+
+.prediction-button {
+  width: 100%;
+  height: 48px;
+  margin-top: 4px;
+
+  border: none;
+  border-radius: 9px;
+
+  background: #119bd0;
+  color: #ffffff;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.prediction-button:hover {
+  background: #18aeea;
+  transform: translateY(-1px);
+}
+
+.prediction-button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Result card */
+
+.prediction-result-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.robot-icon {
+  width: 58px;
+  height: 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 10px;
+
+  border: 1px solid #326986;
+  border-radius: 14px;
+
+  background: #0d2941;
+
+  font-size: 28px;
+}
+
+.result-label {
+  margin: 0 0 4px;
+  color: #7fa5bd;
+  font-size: 13px;
+}
+
+.prediction-result-card h2 {
+  margin: 0 0 12px;
+
+  color: #ffffff;
+  font-size: 25px;
+  font-weight: 700;
+}
+
+/* Risk score */
+
+.risk-score {
+  width: 130px;
+  height: 130px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 4px 0 12px;
+
+  border: 8px solid #ff646c;
+  border-radius: 50%;
+
+  color: #ff646c;
+  font-size: 34px;
+  font-weight: 800;
+
+  box-sizing: border-box;
+}
+
+.risk-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 110px;
+  padding: 7px 16px;
+
+  margin-bottom: 22px;
+
+  border-radius: 20px;
+
+  background: rgba(255, 183, 0, 0.16);
+  color: #ffc107;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* Result information */
+
+.result-grid {
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+
+  margin-bottom: 22px;
+}
+
+.result-box {
+  min-height: 68px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 10px;
+
+  background: #0d2941;
+  border: 1px solid #285473;
+  border-radius: 10px;
+
+  box-sizing: border-box;
+}
+
+.result-box span {
+  margin-bottom: 5px;
+
+  color: #7fa5bd;
+  font-size: 11px;
+}
+
+.result-box strong {
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+/* Buttons */
+
+.result-actions {
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.action-button {
+  height: 43px;
+
+  border: 1px solid #326986;
+  border-radius: 9px;
+
+  background: #123b59;
+  color: #ffffff;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.action-button:hover {
+  background: #185477;
+  border-color: #3d799c;
+}
+
+/* Backend status */
+
+.prediction-source {
+  margin-top: 18px;
+  padding: 8px 14px;
+
+  border-radius: 20px;
+
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+
+  color: #22c55e;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+@media (max-width: 1000px) {
+  .prediction-container {
+    grid-template-columns: 1fr;
+  }
+
+  .prediction-form-card,
+  .prediction-result-card {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .page-container {
+    padding: 20px 15px;
+  }
+
+  .page-header h1 {
+    font-size: 23px;
+  }
+
+  .prediction-form-card,
+  .prediction-result-card {
+    padding: 18px;
+  }
+
+  .result-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .result-actions {
+    grid-template-columns: 1fr;
+  }
+}
+/* =========================================================
+   SURAKSHA-AI - PREDICTIONS PAGE
+   Complete Prediction + Live Weather Styling
+   ========================================================= */
+
+.prediction-container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 24px;
+  margin-top: 24px;
+  align-items: stretch;
+}
+
+.prediction-form-card,
+.prediction-result-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  padding: 28px;
+  box-shadow: 0 8px 25px rgba(15, 23, 42, 0.06);
+  box-sizing: border-box;
+}
+
+/* Header inside cards */
+
+.prediction-form-card .card-header,
+.prediction-result-card .card-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 26px;
+}
+
+.prediction-form-card .card-header h2,
+.prediction-result-card .card-header h2 {
+  margin: 0;
+  font-size: 21px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.prediction-form-card .card-header p,
+.prediction-result-card .card-header p {
+  margin: 5px 0 0;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.robot-icon {
+  width: 46px;
+  height: 46px;
+  min-width: 46px;
+  border-radius: 12px;
+  background: #eef2ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 23px;
+}
+
+/* Form */
+
+.prediction-form-card form {
+  width: 100%;
+}
+
+.form-group {
+  margin-bottom: 19px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.form-group input {
+  width: 100%;
+  height: 46px;
+  padding: 0 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  outline: none;
+  background: #ffffff;
+  color: #111827;
+  font-size: 14px;
+  box-sizing: border-box;
+  transition: 0.2s ease;
+}
+
+.form-group input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.form-group input::placeholder {
+  color: #9ca3af;
+}
+
+/* =========================================================
+   LIVE WEATHER
+   ========================================================= */
+
+.weather-section {
+  margin: 22px 0;
+  padding: 18px;
+  border: 1px solid #dbeafe;
+  border-radius: 14px;
+  background: #f8fbff;
+}
+
+.weather-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 16px;
+}
+
+.weather-section-header h3 {
+  margin: 0;
+  color: #111827;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.weather-section-header p {
+  margin: 4px 0 0;
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.weather-button {
+  border: none;
+  background: #2563eb;
+  color: #ffffff;
+  padding: 9px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: 0.2s ease;
+}
+
+.weather-button:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.weather-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.weather-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.weather-box {
+  min-width: 0;
+  padding: 13px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-sizing: border-box;
+}
+
+.weather-box span {
+  display: block;
+  color: #6b7280;
+  font-size: 11px;
+  margin-bottom: 6px;
+}
+
+.weather-box strong {
+  display: block;
+  color: #111827;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* =========================================================
+   LIVE DATA PREVIEW
+   ========================================================= */
+
+.live-data-preview {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 18px 0;
+}
+
+.live-data-preview > div {
+  padding: 13px 15px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+}
+
+.live-data-preview span {
+  display: block;
+  color: #6b7280;
+  font-size: 11px;
+  margin-bottom: 5px;
+}
+
+.live-data-preview strong {
+  color: #111827;
+  font-size: 15px;
+}
+
+/* =========================================================
+   PREDICTION BUTTON
+   ========================================================= */
+
+.prediction-button {
+  width: 100%;
+  height: 48px;
+  border: none;
+  border-radius: 10px;
+  background: #4f46e5;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.prediction-button:hover {
+  background: #4338ca;
+  transform: translateY(-1px);
+}
+
+.prediction-button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* =========================================================
+   RESULT
+   ========================================================= */
+
+.prediction-result-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.result-label {
+  text-align: center;
+  color: #6b7280;
+  font-size: 13px;
+  margin-top: 5px;
+}
+
+.risk-score {
+  text-align: center;
+  color: #111827;
+  font-size: 58px;
+  line-height: 1;
+  font-weight: 800;
+  margin: 20px 0 12px;
+}
+
+.risk-badge {
+  width: fit-content;
+  margin: 0 auto 25px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: #fff7ed;
+  color: #ea580c;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.result-box {
+  padding: 14px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 11px;
+  min-width: 0;
+}
+
+.result-box span {
+  display: block;
+  color: #6b7280;
+  font-size: 11px;
+  margin-bottom: 6px;
+}
+
+.result-box strong {
+  display: block;
+  color: #111827;
+  font-size: 14px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+/* =========================================================
+   RESULT BUTTONS
+   ========================================================= */
+
+.result-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.action-button {
+  min-height: 44px;
+  border: 1px solid #4f46e5;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #4f46e5;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.action-button:hover {
+  background: #4f46e5;
+  color: #ffffff;
+}
+
+/* =========================================================
+   NO RESULT
+   ========================================================= */
+
+.no-result {
+  flex: 1;
+  min-height: 350px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 25px;
+}
+
+.no-result-icon {
+  font-size: 48px;
+  margin-bottom: 14px;
+}
+
+.no-result h3 {
+  margin: 0 0 8px;
+  color: #111827;
+  font-size: 18px;
+}
+
+.no-result p {
+  max-width: 320px;
+  margin: 0;
+  color: #6b7280;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* =========================================================
+   DATA SOURCE
+   ========================================================= */
+
+.prediction-source {
+  width: 100%;
+  margin-top: 20px;
+  padding: 15px 18px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #6b7280;
+  font-size: 12px;
+  line-height: 1.6;
+  box-sizing: border-box;
+}
+
+.prediction-source strong {
+  color: #374151;
+  margin-right: 5px;
+}
+
+/* =========================================================
+   RESPONSIVE - TABLET
+   ========================================================= */
+
+@media (max-width: 1000px) {
+  .prediction-container {
+    grid-template-columns: 1fr;
+  }
+
+  .prediction-form-card,
+  .prediction-result-card {
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE - MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+  .prediction-form-card,
+  .prediction-result-card {
+    padding: 20px;
+    border-radius: 14px;
+  }
+
+  .prediction-container {
+    gap: 16px;
+    margin-top: 16px;
+  }
+
+  .weather-section-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .weather-button {
+    width: 100%;
+  }
+
+  .weather-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .live-data-preview {
+    grid-template-columns: 1fr;
+  }
+
+  .result-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .result-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .risk-score {
+    font-size: 48px;
+  }
+}
