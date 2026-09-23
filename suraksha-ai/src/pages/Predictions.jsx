@@ -51,7 +51,12 @@ const Predictions = () => {
     const weatherData = await weatherResponse.json();
 
     if (!weatherResponse.ok) {
-      throw new Error(weatherData.detail || "Weather fetch failed");
+      const message =
+        typeof weatherData.detail === "string"
+          ? weatherData.detail
+          : JSON.stringify(weatherData.detail);
+
+      throw new Error(message || "Weather fetch failed");
     }
 
     const terrainResponse = await fetch(
@@ -61,12 +66,18 @@ const Predictions = () => {
     const terrainData = await terrainResponse.json();
 
     if (!terrainResponse.ok) {
-      throw new Error(terrainData.detail || "Terrain fetch failed");
+      const message =
+        typeof terrainData.detail === "string"
+          ? terrainData.detail
+          : JSON.stringify(terrainData.detail);
+
+      throw new Error(message || "Terrain fetch failed");
     }
 
     const updatedWeather = {
       ...weatherData,
       elevation: terrainData.elevation,
+      slope: terrainData.slope,
     };
 
     setWeather(updatedWeather);
@@ -79,17 +90,19 @@ const Predictions = () => {
       slope: terrainData.slope ?? 0,
     }));
 
-    return {
-      ...weatherData,
-      elevation: terrainData.elevation,
-    };
+    return updatedWeather;
 
-    }   catch (error) {
-      console.error("Weather/Terrain Error:", error);
-      alert(error.message);
-      return null;
-    }   finally {
-      setWeatherLoading(false);
+  } catch (error) {
+    console.error("Weather/Terrain Error:", error);
+
+    alert(
+      error?.message || "Unable to fetch weather and terrain data."
+    );
+
+    return null;
+
+    } finally {
+    setWeatherLoading(false);
     }
   };
   const handlePredict = async (e) => {
@@ -110,7 +123,9 @@ const Predictions = () => {
         liveWeather.rainfall ?? liveWeather.precipitation ?? 0
       );
 
-      const soilMoisture = Number(liveWeather.soilMoisture ?? 0);
+      const soilMoisture = Number(
+        (liveWeather.soil_moisture ?? 0) * 100
+      );
 
       // Send live weather + terrain data to prediction API
       const response = await fetch("https://suraksha-ai-3e2g.onrender.com/predict", {
