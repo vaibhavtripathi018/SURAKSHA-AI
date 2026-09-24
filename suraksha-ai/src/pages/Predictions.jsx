@@ -42,74 +42,63 @@ const Predictions = () => {
   try {
     setWeatherLoading(true);
 
-    const weatherResponse = await fetch(
+    // Get live weather
+    const weatherRes = await fetch(
       `https://suraksha-ai-3e2g.onrender.com/weather?location=${encodeURIComponent(
         formData.location
       )}`
     );
 
-    const getWeather = async () => {
-  try {
-    setWeatherLoading(true);
+    const weatherData = await weatherRes.json();
 
-    const weatherResponse = await fetch(
-      `https://suraksha-ai-3e2g.onrender.com/weather?location=${encodeURIComponent(
-        formData.location
-      )}`
-    );
-
-    const weatherData = await weatherResponse.json();
-
-    // Show proper backend errors
-    if (!weatherResponse.ok) {
-      const errorMessage =
+    if (!weatherRes.ok) {
+      const message =
         typeof weatherData.detail === "string"
           ? weatherData.detail
           : JSON.stringify(weatherData.detail);
 
-      throw new Error(errorMessage || "Weather fetch failed");
+      throw new Error(message || "Weather fetch failed");
     }
 
-    // IMPORTANT: check coordinates before calling terrain
-    if (
-      weatherData.latitude === undefined ||
-      weatherData.latitude === null ||
-      weatherData.longitude === undefined ||
-      weatherData.longitude === null
-    ) {
-      console.error("Weather API response:", weatherData);
+    // Get latitude and longitude
+    const latitude = Number(weatherData.latitude);
+    const longitude = Number(weatherData.longitude);
 
+    if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
       throw new Error(
-        "Weather service did not return latitude and longitude."
+        "Weather API did not return valid latitude and longitude."
       );
     }
 
-    // Get terrain using valid coordinates
-    const terrainResponse = await fetch(
-      `https://suraksha-ai-3e2g.onrender.com/terrain?latitude=${Number(
-        weatherData.latitude
-      )}&longitude=${Number(weatherData.longitude)}`
+    // Get terrain data
+    const terrainRes = await fetch(
+      `https://suraksha-ai-3e2g.onrender.com/terrain?latitude=${latitude}&longitude=${longitude}`
     );
 
-    const terrainData = await terrainResponse.json();
+    const terrainData = await terrainRes.json();
 
-    if (!terrainResponse.ok) {
-      const errorMessage =
+    if (!terrainRes.ok) {
+      const message =
         typeof terrainData.detail === "string"
           ? terrainData.detail
           : JSON.stringify(terrainData.detail);
 
-      throw new Error(errorMessage || "Terrain fetch failed");
+      throw new Error(message || "Terrain fetch failed");
     }
 
+    // Combine weather and terrain data
     const updatedWeather = {
       ...weatherData,
-      elevation: terrainData.elevation,
-      slope: terrainData.slope,
+      latitude: latitude,
+      longitude: longitude,
+      elevation: Number(terrainData.elevation ?? 0),
+      slope: Number(terrainData.slope ?? 0),
     };
 
+    // Update weather display
     setWeather(updatedWeather);
 
+    // Update form fields
     setFormData((prev) => ({
       ...prev,
       rainfall: Number(weatherData.rainfall ?? 0),
