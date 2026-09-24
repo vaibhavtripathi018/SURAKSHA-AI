@@ -134,17 +134,20 @@ async def get_weather(location: str):
         weather_data = weather_response.json()
 
         return {
-            "location": place["name"],
-            "latitude": latitude,
-            "longitude": longitude,
-            "temperature": weather_data["current"]["temperature_2m"],
-            "humidity": weather_data["current"]["relative_humidity_2m"],
-            "precipitation": weather_data["current"]["precipitation"],
-            "rainfall": weather_data["current"]["rain"],
-            "wind_speed": weather_data["current"]["wind_speed_10m"],
-            "soil_moisture": weather_data["hourly"]["soil_moisture_0_to_1cm"][0],
-            "timezone": weather_data["timezone"]
-        }
+    "location": place["name"],
+    "latitude": place["latitude"],
+    "longitude": place["longitude"],
+
+    "temperature": weather_data["current"]["temperature_2m"],
+    "humidity": weather_data["current"]["relative_humidity_2m"],
+    "precipitation": weather_data["current"]["precipitation"],
+    "rainfall": weather_data["current"]["rain"],
+    "wind_speed": weather_data["current"]["wind_speed_10m"],
+
+    "soil_moisture": weather_data["hourly"]["soil_moisture_0_to_1cm"][0],
+
+    "timezone": weather_data["timezone"]
+}
 @app.get("/terrain")
 async def get_terrain(latitude: float, longitude: float):
 
