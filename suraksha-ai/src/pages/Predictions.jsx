@@ -38,29 +38,29 @@ const Predictions = () => {
     }));
   };
 
-  const getWeather = async () => {
+ const getWeather = async () => {
   try {
     setWeatherLoading(true);
 
     // Get live weather
-    const weatherRes = await fetch(
+    const weatherResponse = await fetch(
       `https://suraksha-ai-3e2g.onrender.com/weather?location=${encodeURIComponent(
         formData.location
       )}`
     );
 
-    const weatherData = await weatherRes.json();
+    const weatherData = await weatherResponse.json();
 
-    if (!weatherRes.ok) {
-      const message =
+    if (!weatherResponse.ok) {
+      const errorMessage =
         typeof weatherData.detail === "string"
           ? weatherData.detail
           : JSON.stringify(weatherData.detail);
 
-      throw new Error(message || "Weather fetch failed");
+      throw new Error(errorMessage || "Weather fetch failed");
     }
 
-    // Get latitude and longitude
+    // Check latitude and longitude
     const latitude = Number(weatherData.latitude);
     const longitude = Number(weatherData.longitude);
 
@@ -70,23 +70,23 @@ const Predictions = () => {
       );
     }
 
-    // Get terrain data
-    const terrainRes = await fetch(
+    // Get terrain
+    const terrainResponse = await fetch(
       `https://suraksha-ai-3e2g.onrender.com/terrain?latitude=${latitude}&longitude=${longitude}`
     );
 
-    const terrainData = await terrainRes.json();
+    const terrainData = await terrainResponse.json();
 
-    if (!terrainRes.ok) {
-      const message =
+    if (!terrainResponse.ok) {
+      const errorMessage =
         typeof terrainData.detail === "string"
           ? terrainData.detail
           : JSON.stringify(terrainData.detail);
 
-      throw new Error(message || "Terrain fetch failed");
+      throw new Error(errorMessage || "Terrain fetch failed");
     }
 
-    // Combine weather and terrain data
+    // Combine weather + terrain
     const updatedWeather = {
       ...weatherData,
       latitude: latitude,
@@ -95,10 +95,9 @@ const Predictions = () => {
       slope: Number(terrainData.slope ?? 0),
     };
 
-    // Update weather display
     setWeather(updatedWeather);
 
-    // Update form fields
+    // Update form
     setFormData((prev) => ({
       ...prev,
       rainfall: Number(weatherData.rainfall ?? 0),
@@ -123,49 +122,6 @@ const Predictions = () => {
     setWeatherLoading(false);
   }
 };
-
-    const terrainData = await terrainResponse.json();
-
-    if (!terrainResponse.ok) {
-      const message =
-        typeof terrainData.detail === "string"
-          ? terrainData.detail
-          : JSON.stringify(terrainData.detail);
-
-      throw new Error(message || "Terrain fetch failed");
-    }
-
-    const updatedWeather = {
-      ...weatherData,
-      elevation: terrainData.elevation,
-      slope: terrainData.slope,
-    };
-
-    setWeather(updatedWeather);
-
-    setFormData((prev) => ({
-      ...prev,
-      rainfall: weatherData.rainfall ?? 0,
-      soil_moisture: (weatherData.soil_moisture ?? 0) * 100,
-      elevation: terrainData.elevation ?? 0,
-      slope: terrainData.slope ?? 0,
-    }));
-
-    return updatedWeather;
-
-  } catch (error) {
-    console.error("Weather/Terrain Error:", error);
-
-    alert(
-      error?.message || "Unable to fetch weather and terrain data."
-    );
-
-    return null;
-
-    } finally {
-    setWeatherLoading(false);
-    }
-  };
   const handlePredict = async (e) => {
     e.preventDefault();
 
